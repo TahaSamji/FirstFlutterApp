@@ -64,7 +64,7 @@ class _MyjobsPageState extends State<MyJobsPage> {
           title: const Text(
             "Jobs",
             style: TextStyle(
-              fontWeight: FontWeight.bold, // This makes the text bold
+              fontWeight: FontWeight.bold,
             ),
           ),
           actions: <Widget>[
