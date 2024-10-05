@@ -16,7 +16,8 @@ class _MyjobsPageState extends State<MyJobsPage> {
     final res = await http
         .get(Uri.parse('https://mpa0771a40ef48fcdfb7.free.beeceptor.com/jobs'));
     if (res.statusCode == 200) {
-      Map<String, dynamic> jsonResponse = jsonDecode(res.body);
+      Map<String, dynamic> jsonResponse =
+          jsonDecode(utf8.decode(res.body.codeUnits));
       List<dynamic> data = jsonResponse['data'];
 
       List<Jobs> jobsList =
@@ -62,7 +63,7 @@ class _MyjobsPageState extends State<MyJobsPage> {
           backgroundColor: Colors.white,
           title: const Text(
             "Jobs",
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.bold, // This makes the text bold
             ),
           ),
