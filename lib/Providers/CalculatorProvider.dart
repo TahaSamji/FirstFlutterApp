@@ -1,0 +1,88 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+
+class Counter with ChangeNotifier {
+  String _value = "0";
+  double? _previousValue;
+  String _operator = "";
+  bool _isNewEntry = false; 
+  bool colorInverted = false; 
+
+  String get value => _value;
+
+  void changeValue(String newValue) {
+    if (_isNewEntry) {
+      _value = newValue;
+      _isNewEntry = false;
+    } else {
+      _value = _value == "0" ? newValue : _value + newValue;
+    }
+    notifyListeners();
+  }
+
+  void setOperator(String operator) {
+    if (_operator.isEmpty) {
+      _previousValue = double.tryParse(_value);
+      _operator = operator;
+      _isNewEntry = true; // Set flag to indicate a new number entry
+    } else {
+      calculateResult();
+      _operator = operator;
+      _previousValue = double.tryParse(_value);
+      _isNewEntry = true; // Reset for new number entry
+    }
+    notifyListeners();
+  }
+
+  void calculateResult() {
+    if (_previousValue != null && _operator.isNotEmpty) {
+      double currentValue = double.tryParse(_value) ?? 0;
+      double result;
+
+      switch (_operator) {
+        case "+":
+          result = _previousValue! + currentValue;
+          break;
+        case "-":
+          result = _previousValue! - currentValue;
+          break;
+        case "×":
+          result = _previousValue! * currentValue;
+          break;
+        case "÷":
+          result = currentValue != 0 ? _previousValue! / currentValue : 0;
+          break;
+        default:
+          result = currentValue;
+      }
+
+      _value = result.toString();
+      _previousValue = null;
+      _operator = "";
+      _isNewEntry = true; 
+      notifyListeners();
+    }
+  }
+
+  void clear() {
+    _value = "0";
+    _previousValue = null;
+    _operator = "";
+    _isNewEntry = false;
+    notifyListeners();
+  }
+
+  void invertSign() {
+    _value = _value.startsWith("-") ? _value.substring(1) : "-$_value";
+    notifyListeners();
+  }
+
+  void colorInvert() {
+     if (colorInverted){
+      colorInverted= false;
+     }else{
+      colorInverted = true;
+     }
+    notifyListeners();
+  }
+}
