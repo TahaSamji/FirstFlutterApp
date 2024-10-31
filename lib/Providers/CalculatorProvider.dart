@@ -6,7 +6,6 @@ class Counter with ChangeNotifier {
   double? _previousValue;
   String _operator = "";
   bool _isNewEntry = false;
-  bool colorInverted = false;
   final List<String> _history = []; 
 
   String get value => _value;
@@ -58,14 +57,14 @@ class Counter with ChangeNotifier {
           result = currentValue != 0 ? _previousValue! / currentValue : 0;
           break;
         case "%":
-          result = currentValue != 0 ? _previousValue! % currentValue : 0;
+          result = currentValue != 0 ? currentValue /100: 0;
           break;
         default:
           result = currentValue;
       }
 
     
-      _history.insert(0, "${_previousValue ?? 0} $_operator $currentValue = $result");
+      _history.insert(0,_operator!="%" ?  "${_previousValue ?? 0} $_operator $currentValue = $result" : "$_operator $currentValue = $result");
       
       _value = result.toString();
       _previousValue = null;
@@ -82,7 +81,7 @@ class Counter with ChangeNotifier {
     _isNewEntry = false;
     notifyListeners();
   }
-   void ClearHistory() {
+   void clearHistory() {
     
    history.clear();
     notifyListeners();
