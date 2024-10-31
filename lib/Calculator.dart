@@ -24,13 +24,14 @@ class Count extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.centerRight,
-      padding: const EdgeInsets.symmetric(vertical: 24.0, horizontal: 55),
+      padding: const EdgeInsets.symmetric(vertical: 24.0, horizontal: 45),
       child: Text(
         context.watch<Counter>().value,
         style: const TextStyle(
           color: Colors.white,
           fontSize: 60.0,
           fontWeight: FontWeight.w300,
+
         ),
       ),
     );
