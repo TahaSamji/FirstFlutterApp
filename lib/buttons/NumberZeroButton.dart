@@ -16,7 +16,7 @@ class NumberZeroButton extends StatelessWidget {
         
           ),
           
-          padding: const EdgeInsets.only(left: 75,top:20 ,bottom: 20,right: 75 ), 
+          padding: const EdgeInsets.only(left: 22,top:20 ,bottom: 20,right: 125 ), 
           backgroundColor: Colors.grey[800],
           
         ),
