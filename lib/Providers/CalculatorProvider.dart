@@ -5,12 +5,17 @@ class Counter with ChangeNotifier {
   String _value = "0";
   double? _previousValue;
   String _operator = "";
-  bool _isNewEntry = false; 
-  bool colorInverted = false; 
+  bool _isNewEntry = false;
+  bool colorInverted = false;
+  final List<String> _history = []; 
 
   String get value => _value;
+  List<String> get history => _history; 
 
   void changeValue(String newValue) {
+    if (_value.contains(".") && newValue == ".") {
+      return; 
+    }
     if (_isNewEntry) {
       _value = newValue;
       _isNewEntry = false;
@@ -24,12 +29,12 @@ class Counter with ChangeNotifier {
     if (_operator.isEmpty) {
       _previousValue = double.tryParse(_value);
       _operator = operator;
-      _isNewEntry = true; // Set flag to indicate a new number entry
+      _isNewEntry = true;
     } else {
       calculateResult();
       _operator = operator;
       _previousValue = double.tryParse(_value);
-      _isNewEntry = true; // Reset for new number entry
+      _isNewEntry = true;
     }
     notifyListeners();
   }
@@ -52,14 +57,20 @@ class Counter with ChangeNotifier {
         case "÷":
           result = currentValue != 0 ? _previousValue! / currentValue : 0;
           break;
+        case "%":
+          result = currentValue != 0 ? _previousValue! % currentValue : 0;
+          break;
         default:
           result = currentValue;
       }
 
+    
+      _history.insert(0, "${_previousValue ?? 0} $_operator $currentValue = $result");
+      
       _value = result.toString();
       _previousValue = null;
       _operator = "";
-      _isNewEntry = true; 
+      _isNewEntry = true;
       notifyListeners();
     }
   }
@@ -71,18 +82,16 @@ class Counter with ChangeNotifier {
     _isNewEntry = false;
     notifyListeners();
   }
+   void ClearHistory() {
+    
+   history.clear();
+    notifyListeners();
+  }
 
   void invertSign() {
     _value = _value.startsWith("-") ? _value.substring(1) : "-$_value";
     notifyListeners();
   }
 
-  void colorInvert() {
-     if (colorInverted){
-      colorInverted= false;
-     }else{
-      colorInverted = true;
-     }
-    notifyListeners();
-  }
+ 
 }
