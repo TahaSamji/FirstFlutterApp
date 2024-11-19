@@ -3,17 +3,14 @@ import 'package:flutter_application_1/auth/loginpage.dart';
 import 'package:flutter_application_1/main.dart';
 
 class SignUpScreen extends StatelessWidget {
-  const SignUpScreen({Key? key}) : super(key: key);
+  const SignUpScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Create a form key for validation and form state management
-    final _formKey = GlobalKey<FormState>();
-
-    // TextEditingControllers to capture input values
-    AuthService _authService = AuthService();
-    TextEditingController emailController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
+    final formKey = GlobalKey<FormState>();
+    final AuthService authService = AuthService();
+    final TextEditingController emailController = TextEditingController();
+    final TextEditingController passwordController = TextEditingController();
 
     return Scaffold(
       appBar: AppBar(
@@ -21,49 +18,85 @@ class SignUpScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () {
-              // Navigate to the login screen when pressed
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => LoginScreen()),
+                MaterialPageRoute(builder: (context) => const LoginScreen()),
               );
             },
             child: const Text(
-                "Login"), // Changed from 'Signup' to 'Login' for consistency
+              "Login",
+              style: TextStyle(color: Colors.white),
+            ),
           ),
         ],
       ),
-      body: Form(
-        key: _formKey, // Attach form key here
-        child: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextFormField(
                 controller: emailController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Email',
+                  border: OutlineInputBorder(),
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your email';
+                  } else if (!RegExp(
+                          r"^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$")
+                      .hasMatch(value)) {
+                    return 'Please enter a valid email';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 16),
               TextFormField(
                 obscureText: true,
                 controller: passwordController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Password',
+                  border: OutlineInputBorder(),
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your password';
+                  } else if (value.length < 6) {
+                    return 'Password must be at least 6 characters';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () async {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    print('Email: ${emailController.text}');
-                    print('Password: ${passwordController.text}');
-                    String? response = await _authService.registration(
-                        email: emailController.text,
-                        password: passwordController.text);
+                  if (formKey.currentState?.validate() ?? false) {
+                    final String? response = await authService.registration(
+                      email: emailController.text.trim(),
+                      password: passwordController.text.trim(),
+                    );
+
                     print(response);
-                  } else {
-                    print('Form is not valid');
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(response ?? 'An error occurred'),
+                        backgroundColor:
+                            response == "Success" ? Colors.green : Colors.red,
+                      ),
+                    );
+
+                    if (response == "Success") {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LoginScreen(),
+                        ),
+                      );
+                    }
                   }
                 },
                 child: const Text('Register'),

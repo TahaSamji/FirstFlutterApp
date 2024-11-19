@@ -1,28 +1,37 @@
-import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Page.dart';
-import 'package:flutter_application_1/auth/loginpage.dart';
 import 'package:flutter_application_1/auth/signupPage.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_application_1/bloc/bloc_dummy.dart';
+import 'package:flutter_application_1/firebase_options.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MainApp());
 }
+
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-        debugShowCheckedModeBanner: false, home: SignUpScreen());
-    // home: BlocProvider(
-    //   create: (context) => ProductBloc()..add(FetchProducts()),
-    //   child: const MyProducts(),
-    // ));
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: const SignUpScreen(),
+      routes: {
+       
+        '/products': (context) => BlocProvider(
+              create: (context) => ProductBloc()..add(FetchProducts()),
+              child: const MyProducts(),
+            ),
+      },
+    );
   }
 }
 
@@ -32,14 +41,16 @@ class AuthService {
     required String password,
   }) async {
     try {
-      await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
-      return "Success";
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      return 'Success';
     } on FirebaseAuthException catch (e) {
-      if (e.code == "weak-password") {
-        return "Password weak";
-      } else if (e.code == "email-already-in-use") {
-        return "Acount Already exist";
+      if (e.code == 'weak-password') {
+        return 'The password provided is too weak.';
+      } else if (e.code == 'email-already-in-use') {
+        return 'The account already exists for that email.';
       } else {
         return e.message;
       }
@@ -53,14 +64,16 @@ class AuthService {
     required String password,
   }) async {
     try {
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
-      return "Success";
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      return 'Success';
     } on FirebaseAuthException catch (e) {
-      if (e.code == "user-not-found") {
-        return "User does not exist";
-      } else if (e.code == "wrong-password") {
-        return "wrong password";
+      if (e.code == 'user-not-found') {
+        return 'No user found for that email.';
+      } else if (e.code == 'wrong-password') {
+        return 'Wrong password provided for that user.';
       } else {
         return e.message;
       }
