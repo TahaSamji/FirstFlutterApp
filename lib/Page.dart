@@ -50,53 +50,51 @@ class _MyProductsState extends State<MyProducts> {
             )
           ],
         ),
-        body: BlocBuilder<ProductBloc,ProductState>(builder: (context,state){
-          if(state is ProductLoading){
-   return Text("hi");
-          }else if(state is ProductLoaded) {
-            return   ListView.builder(
-                      itemCount: state.products.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                          margin: const EdgeInsets.symmetric(vertical: 2),
-                          child: Card(
-                            child: Padding(
-                              padding: const EdgeInsets.all(
-                                  16.0), //
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  ListTile(
-                                    title: Text(state.products[index].title),
-                                    leading: CircleAvatar(
-                                        backgroundImage: NetworkImage(
-                                          state.products[index].images[0])),
-                                    subtitle: Column(children: [Text(state.products[index].description),Text(state.products[index].price.toString()),Wrap(
-                                        spacing:
-                                            8.0, 
-                                        runSpacing:
-                                            4.0, 
+        body: BlocBuilder<ProductBloc, ProductState>(builder: (context, state) {
+          if (state is ProductLoading) {
+            return const Text("hi");
+          } else if (state is ProductLoaded) {
+            return ListView.builder(
+                itemCount: state.products.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Container(
+                    margin: const EdgeInsets.symmetric(vertical: 2),
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0), //
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ListTile(
+                                title: Text(state.products[index].title),
+                                leading: CircleAvatar(
+                                    backgroundImage: NetworkImage(
+                                        state.products[index].images[0])),
+                                subtitle: Column(
+                                  children: [
+                                    Text(state.products[index].description),
+                                    Text(
+                                        state.products[index].price.toString()),
+                                    Wrap(
+                                        spacing: 8.0,
+                                        runSpacing: 4.0,
                                         children: state.products[index].tags
                                             .map<Widget>((tag) {
                                           return Text(tag);
-                                        }).toList()),],) 
-                                  ),
-                                  Text(state.products[index].reviews[0].comment)
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      });;
-          }else if (state is ProductError){
+                                        }).toList()),
+                                  ],
+                                )),
+                            Text(state.products[index].reviews[0].comment)
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                });
+          } else if (state is ProductError) {
             return Center(child: Text(state.error));
-
           }
-          return CircularProgressIndicator();
-
-
-        })
-       
-        );
+          return const CircularProgressIndicator();
+        }));
   }
 }
