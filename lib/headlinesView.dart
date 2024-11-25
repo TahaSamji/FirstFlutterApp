@@ -183,23 +183,7 @@ class HeadlinesView extends StatelessWidget {
                                     child: Image.network(
                                       article.urlToImage.trim(),
                                       fit: BoxFit.cover,
-                                      frameBuilder: (BuildContext context,
-                                          Widget child,
-                                          int? frame,
-                                          bool wasSynchronouslyLoaded) {
-                                        if (wasSynchronouslyLoaded) {
-                                          return child;
-                                        }
-                                        return Shimmer.fromColors(
-                                          baseColor: Colors.black12,
-                                          highlightColor: Colors.white,
-                                          child: Container(
-                                            width: 175,
-                                            height: 175,
-                                            color: Colors.white,
-                                          ),
-                                        );
-                                      },
+                                     
                                       errorBuilder:
                                           (context, error, stackTrace) {
                                         return Image.asset(
