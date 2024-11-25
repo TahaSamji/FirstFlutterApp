@@ -24,14 +24,14 @@ class Article {
   factory Article.fromJson(Map<String, dynamic> json) {
     return Article(
     
-      name:json['source']['name'] ?? "Hi",
+      name:json['source']['name'] ?? "No Name Available",
       author: json['author']  ?? "Unknown Author",
-      title: json['title']  ?? "Hi",
-      description: json['description']  ?? "Hi",
-      url: json['url']  ?? "Hi",
-      urlToImage: json['urlToImage'] ?? "Hi",
+      title: json['title']  ?? "No title Available",
+      description: json['description']  ?? "No description available",
+      url: json['url']  ?? "",
+      urlToImage: json['urlToImage'] ?? "No Image",
      publishedAt: json['publishedAt'] != null ? DateTime.parse(json['publishedAt']) : DateTime.now(),
-      content: json['content'] ?? "Hi",
+      content: json['content'] ?? "No additional content available",
     );
   }
 }

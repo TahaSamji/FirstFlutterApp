@@ -37,6 +37,7 @@ Future<void> _onFetchHeadlines(
 ) async{
   emit(HeadlineLoading());
   try {
+     
         final res = await http.get(Uri.parse('https://newsapi.org/v2/top-headlines?country=us&apiKey=abb021fcd9124fe4a756d19365dc0136'));
         List<Article> article;
     if (res.statusCode == 200) {

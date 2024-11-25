@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/bloc/headlines_bloc.dart';
-import 'package:flutter_application_1/headlinesView.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_application_1/SplashScreen.dart';
 
 void main() {
   runApp(const MyApp());
 }
+
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -13,18 +13,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-     home:BlocProvider(
-      create: (context) => HeadlineBloc()..add(FetchHeadlines()),
-      child: const HeadlinesView(),
-    )
-    );
-  
+        debugShowCheckedModeBanner: false,
+        color: Colors.white,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          // colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
+
+          useMaterial3: true,
+        ),
+        home: const SplashScreen());
   }
 }
-
