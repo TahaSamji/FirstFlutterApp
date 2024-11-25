@@ -13,15 +13,13 @@ class HeadlinesView extends StatelessWidget {
     return DateFormat('yyyy-MM-dd').format(date);
   }
 
-  void openURL(String url) async {
+void openURL(String url) async {
     final uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
-    } else {
+    if (!await launchUrl(uri)){
       throw 'Could not launch $url';
     }
   }
-
+  
   void _showModal(BuildContext context, Article article) async {
     showModalBottomSheet<void>(
       context: context,
