@@ -5,7 +5,6 @@ import 'package:flutter_application_1/models/Artical.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:shimmer/shimmer.dart';
 
 class HeadlinesView extends StatelessWidget {
   const HeadlinesView({super.key});
