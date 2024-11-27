@@ -101,6 +101,26 @@ class SignUpScreen extends StatelessWidget {
                 },
                 child: const Text('Register'),
               ),
+              ElevatedButton(onPressed: ()async{
+   try {
+                    await authService.signInWithGoogle();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Logged in with Google!'),
+                        backgroundColor: Colors.green,
+                      ),
+                    );
+                      Navigator.pushNamed(context, '/products');
+                  } catch (e) {
+                    print(e);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Google login failed: $e'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
+              }, child: Text("Google Login"))
             ],
           ),
         ),

@@ -7,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_application_1/bloc/bloc_dummy.dart';
 import 'package:flutter_application_1/firebase_options.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -80,5 +81,18 @@ class AuthService {
     } catch (e) {
       return e.toString();
     }
+  }
+
+  Future<UserCredential> signInWithGoogle() async {
+     final GoogleSignIn googleSignIn = GoogleSignIn(
+    clientId: '986741810915-mnjfpn4h9goibmeioearr8k1277bgcs6.apps.googleusercontent.com', // Replace with your actual client ID
+  );
+    final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+    return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 }
